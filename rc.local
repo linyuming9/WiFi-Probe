@@ -1,0 +1,3 @@
+ntpd -n -q -p 0.openwrt.pool.ntp.org  # calibration time
+mount -t vfat /dev/sda1 /mnt/usb  # mount the usb drive
+tcpdump -n -e -tttt -vvvv -i wlan0-1 subtype probe-req | python /root/main.py  # capture the wlan signal
