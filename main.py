@@ -1,12 +1,5 @@
 import fileinput
 
-def find_channel(line):
-    mhz = "MHz"
-    channel = line.find(mhz.upper())
-    if(channel >= 0):
-        return line[channel-5:channel-1]
-    return ""
-
 def get_rss(line):
     db = "dB"
     rss_exists = line.find(db.upper())
@@ -31,23 +24,27 @@ def get_mac_destination(line):
 def print_data(line):
     data = line.split(" ")
     date = data[0]
-    time = data[1]
+    time = data[1][0:7]
     
     rss = get_rss(line)
     mac_source = get_mac_source(line)
     mac_dest = get_mac_destination(line)
     
-    return(date + " " + time + " " + rss + " " + mac_source + " " + mac_dest)
+    return(date + " " + time + "," + mac_source + "," + mac_dest + "," + rss)
 
 def main():
     f = open('/mnt/usb/record','a') #record position
 
     try:
+	pre_record = str()
         while(True):
             for line in fileinput.input():
                 l = line.upper()
-		print(print_data(l))
-                f.write(print_data(l)+'\n')
+
+		record = print_data(l)
+		if record[:-2] != pre_cord[:-2] :
+			f.write(record+'\n')
+		pre_record = record
 
     except KeyboardInterrupt:
         print("Program stopped by user")
