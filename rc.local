@@ -10,3 +10,4 @@ tcpdump -n -e -tttt -vvvv -i wlan0-1 subtype probe-req | python /root/main.py  #
 #data
 #beacon     #AP broadcast
 #null       #unkown but useful in capture connected STA
+
