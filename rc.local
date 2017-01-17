@@ -1,7 +1,10 @@
-ntpd -n -q -p 0.openwrt.pool.ntp.org  # calibration time
-mount -t vfat /dev/sda1 /mnt/usb  # mount the usb drive
+# Put your custom commands here that should be executed once
+# the system init finished. By default this file does nothing.
 
-tcpdump -n -e -tttt -vvvv -i wlan0-1 subtype probe-req | python /root/main.py  # capture the wlan signal
+mount -t vfat /dev/sda1 /mnt/usb && ntpd -q -p cn.ntp.org.cn && sleep 10s && tcpdump -n -e -tttt -vvvv -i wlan0-1 subtype probe-req or subtype null | python /root/main.py
+
+exit 0
+
 
 #several kinds of subtype that can be captured
 #probe-req  #unconnected STA scan for AP
@@ -10,4 +13,3 @@ tcpdump -n -e -tttt -vvvv -i wlan0-1 subtype probe-req | python /root/main.py  #
 #data
 #beacon     #AP broadcast
 #null       #unkown but useful in capture connected STA
-
