@@ -36,7 +36,7 @@ def main():
     f = open('/mnt/usb/record','a') #record position
 
     try:
-	pre_record = str()
+	pre_record = ""
         while(True):
             for line in fileinput.input():
                 l = line.upper()
