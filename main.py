@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import fileinput
+import zipfile
+import time
+import os
 
 def get_rss(line):
     db = "dB"
@@ -34,18 +37,44 @@ def print_data(line):
     
     return(date + " " + time + "," + mac_source + "," + mac_dest + "," + rss)
 
+
+def zip_file(srcFile,dstname):
+    zipFile = zipfile.ZipFile(dstname,'w',zipfile.ZIP_DEFLATED)
+    zipFile.write(srcFile)
+    zipFile.close()
+    
+    os.remove(srcFile)
+    
+
+def zip_time():
+    now = time.localtime()
+    if now[4] == 0 & now[5]<=3 :
+        return True
+    else:
+        return False
+
+    
 def main():
     pre = ""
     f = open("/mnt/usb/record","a",0)
     try:
         while(True):
+            if zip_time():
+                f.close()
+                zip_file("/mnt/usb/record", "/mnt/usb/" + time.strftime("%F-%H") + ".zip")
+                f = open("/mnt/usb/record","a",0)
+                
             for line in fileinput.input():
                 l = line.upper()
                 rec = print_data(l)
                 if rec[0:-5] != pre:
                     f.write(rec + '\n')
                 pre = rec[0:-5]
+                
     except KeyboardInterrupt:
         print("Program stopped by user")
     f.close()
-main();
+    
+    
+if __name__ =='__main__' :
+    main();
