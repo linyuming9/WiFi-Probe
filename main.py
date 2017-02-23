@@ -48,7 +48,8 @@ def zip_file(srcFile,dstname):
 
 def zip_time():
     now = time.localtime()
-    if now[4] == 0 & now[5]<=3 :
+    if (now[3] in [0,6,12,18]) & (now[4] == 0) & (now[5] == 0) :
+        time.sleep(1)
         return True
     else:
         return False
