@@ -58,6 +58,9 @@ def zip_time():
 def main():
     pre = ""
     f = open("/mnt/usb/record","a",0)
+    o = open("/mnt/usb/openinfo","a",0)
+    o.write(str(time.localtime()))
+    o.close()
     try:
         while(True):
             if zip_time():
