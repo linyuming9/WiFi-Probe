@@ -57,16 +57,19 @@ def zip_time():
     
 def main():
     pre = ""
-    f = open("/mnt/usb/record","a",0)
-    o = open("/mnt/usb/openinfo","a",0)
+    filename = "/mnt/usb/record"+ time.strftime("%F-%H")+ '.txt'
+    f = open(filename,"a",0)
+    o = open("/mnt/usb/openinfo.txt","a",0)
     o.write(str(time.localtime()))
     o.close()
     try:
         while(True):
             if zip_time():
                 f.close()
-                zip_file("/mnt/usb/record", "/mnt/usb/" + time.strftime("%F-%H") + ".zip")
-                f = open("/mnt/usb/record","a",0)
+                zip_file(filename, "/mnt/usb/" + time.strftime("%F-%H") + ".zip")
+                
+                filename = "/mnt/usb/record"+ time.strftime("%F-%H")+ '.txt'
+                f = open(filename,"a",0)
                 
             for line in fileinput.input():
                 l = line.upper()
