@@ -57,11 +57,11 @@ def zip_time():
     
 def main():
     pre = ""
-    filename = "/mnt/usb/record"+ time.strftime("%F %T")+ '.txt'
+    filename = "/mnt/usb/record_"+ time.strftime("%F-%H")+ '.txt'
     f = open(filename,"a",0)
     
     o = open("/mnt/usb/openinfo.txt","a",0)
-    o.write(time.strftime("%F %T"))
+    o.write(time.strftime("%F-%H"))
     o.close()
     
     try:
@@ -70,7 +70,7 @@ def main():
                 f.close()
                 zip_file(filename, "/mnt/usb/" + time.strftime("%F-%H") + ".zip")
                 
-                filename = "/mnt/usb/record"+ time.strftime("%F %T")+ '.txt'
+                filename = "/mnt/usb/record_"+ time.strftime("%F-%H")+ '.txt'
                 f = open(filename,"a",0)
                 
             for line in fileinput.input():
