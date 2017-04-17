@@ -59,9 +59,11 @@ def main():
     pre = ""
     filename = "/mnt/usb/record"+ time.strftime("%F-%H")+ '.txt'
     f = open(filename,"a",0)
+    
     o = open("/mnt/usb/openinfo.txt","a",0)
     o.write(str(time.localtime()))
     o.close()
+    
     try:
         while(True):
             if zip_time():
