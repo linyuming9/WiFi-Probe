@@ -37,7 +37,6 @@ def print_data(line):
     
     return(date + " " + time + "," + mac_source + "," + mac_dest + "," + rss)
 
-
 def zip_file(srcFile,dstname):
     cnt = 0
     while os.path.exists(dstname+'.zip'):
@@ -52,13 +51,19 @@ def zip_file(srcFile,dstname):
     
 def main():
     pre = ""
+    path = "/mnt/usb/"
+    o = open("/mnt/usb/openinfo.txt","a",0)
+    o.write(time.strftime("%F-%H-%M-%S") +' boot\n')
+    
+    for file in os.listdir(path):
+        if (file[-4:] == '.txt') and (file[:-4] != 'openinfo'):
+            zip_file(filename, filename[:-4])
+            o.write(time.strftime("%F-%H-%M-%S") + ' zip ' + filename + '\n')
+            
     filename = "/mnt/usb/record_"+ time.strftime("%F-%H-%M-%S")+ '.txt'
     f = open(filename,"a",0)
-
-    o = open("/mnt/usb/openinfo.txt","a",0)
-    o.write(time.strftime("%F-%H-%M-%S") +' open\n')
-    o.close()
-
+    o.write(time.strftime("%F-%H-%M-%S") +' record ' + filename + '\n')
+    
     cnt = 0
     while(True):
         for line in fileinput.input():
@@ -66,25 +71,20 @@ def main():
             if cnt == 3000000:
                 f.close()
                 zip_file(filename, filename[:-4])
-                
-                o = open("/mnt/usb/openinfo.txt","a",0)
-                o.write(time.strftime("%F-%H-%M-%S") +' zip\n')
-                o.close()
+                o.write(time.strftime("%F-%H-%M-%S") + ' zip ' + filename + '\n')
                 
                 filename = "/mnt/usb/record_"+ time.strftime("%F-%H-%M-%S")+ '.txt'
                 f = open(filename,"a",0)
+                o.write(time.strftime("%F-%H-%M-%S") +' record ' + filename + '\n')
                 cnt = 0
                 
-                o = open("/mnt/usb/openinfo.txt","a",0)
-                o.write(time.strftime("%F-%H-%M-%S") +' open\n')
-                o.close()
-
             l = line.upper()
             rec = print_data(l)
             if rec[0:-5] != pre:
                 f.write(rec + '\n')
             pre = rec[0:-5]
     f.close()
+    o.close()
     
 if __name__ =='__main__' :
     main();
