@@ -50,10 +50,11 @@ def zip_file(srcFile,dstname):
     
     os.remove(srcFile)
     
-    
 def main():
     pre = ""
     filename = "/mnt/usb/record_"+ time.strftime("%F-%H-%M-%S")+ '.txt'
+    if os.path.exists(filename):
+        zip_file(filename, filename[:-4])
     f = open(filename,"a",0)
     cnt = 0
 
