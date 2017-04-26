@@ -39,51 +39,46 @@ def print_data(line):
 
 
 def zip_file(srcFile,dstname):
-    zipFile = zipfile.ZipFile(dstname,'w',zipfile.ZIP_DEFLATED)
+    cnt = 0
+    while os.path.exists(dstname+'.zip'):
+        dstname = dstname.split('v')[0] + 'v%s'%cnt
+        cnt += 1
+    dstname = dstname + '.zip'
+    zipFile = zipfile.ZipFile(dstname,'a',zipfile.ZIP_DEFLATED)
     zipFile.write(srcFile)
     zipFile.close()
     
     os.remove(srcFile)
     
-
-def zip_time():
-    now = time.localtime()
-    if (now[3] in [0,6,12,18]) & (now[4] == 0) & (now[5] == 0) :
-        time.sleep(1)
-        return True
-    else:
-        return False
-
     
 def main():
     pre = ""
-    filename = "/mnt/usb/record_"+ time.strftime("%F-%H")+ '.txt'
+    filename = "/mnt/usb/record_"+ time.strftime("%F-%H-%M-%S")+ '.txt'
     f = open(filename,"a",0)
-    
+    cnt = 0
+
     o = open("/mnt/usb/openinfo.txt","a",0)
-    o.write(time.strftime("%F-%H"))
+    o.write(time.strftime("%F-%H-%M-%S") +'\n')
     o.close()
-    
-    try:
-        while(True):
-            if zip_time():
+
+    while(True):
+        for line in fileinput.input():
+            cnt += 1
+            if cnt == 3000000:
                 f.close()
-                zip_file(filename, "/mnt/usb/" + time.strftime("%F-%H") + ".zip")
+                zip_file(filename, filename[:-4])
                 
-                filename = "/mnt/usb/record_"+ time.strftime("%F-%H")+ '.txt'
+                filename = "/mnt/usb/record_"+ time.strftime("%F-%H-%M-%S")+ '.txt'
                 f = open(filename,"a",0)
-                
-            for line in fileinput.input():
-                l = line.upper()
-                rec = print_data(l)
-                if rec[0:-5] != pre:
-                    f.write(rec + '\n')
-                pre = rec[0:-5]
-                
-    except KeyboardInterrupt:
-        print("Program stopped by user")
+                cnt = 0
+
+            l = line.upper()
+            rec = print_data(l)
+            if rec[0:-5] != pre:
+                f.write(rec + '\n')
+            pre = rec[0:-5]
+            
     f.close()
-    
     
 if __name__ =='__main__' :
     main();
