@@ -54,11 +54,11 @@ def main():
     path = "/mnt/usb/"
     o = open("/mnt/usb/openinfo.txt","a",0)
     o.write(time.strftime("%F-%H-%M-%S") +' boot\n')
-    
+        
     for file in os.listdir(path):
         if (file[-4:] == '.txt') and (file[:-4] != 'openinfo'):
-            zip_file(filename, filename[:-4])
-            o.write(time.strftime("%F-%H-%M-%S") + ' zip ' + filename + '\n')
+            zip_file(path + file, (path + file)[:-4])
+            o.write(time.strftime("%F-%H-%M-%S") + ' zip ' + path + file + '\n')
             
     filename = "/mnt/usb/record_"+ time.strftime("%F-%H-%M-%S")+ '.txt'
     f = open(filename,"a",0)
