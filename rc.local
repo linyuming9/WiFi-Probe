@@ -1,7 +1,7 @@
 # Put your custom commands here that should be executed once
 # the system init finished. By default this file does nothing.
 
-mount -t vfat /dev/sda1 /mnt/usb && ntpd -q -p cn.ntp.org.cn && sleep 10s && tcpdump -n -e -tttt -vvvv -i wlan0-1 subtype probe-req or subtype null | python /root/main.py
+mount -t vfat /dev/$(ls -1 /dev | grep 'sd[a-z][1-9]') /mnt/usb && ntpd -q -p cn.ntp.org.cn && sleep 10s && tcpdump -n -e -tttt -vvvv -i wlan0-1 subtype probe-req or subtype null | python /root/main.py
 
 exit 0
 
