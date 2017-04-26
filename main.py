@@ -54,12 +54,12 @@ def main():
     pre = ""
     filename = "/mnt/usb/record_"+ time.strftime("%F-%H-%M-%S")+ '.txt'
     f = open(filename,"a",0)
-    cnt = 0
 
     o = open("/mnt/usb/openinfo.txt","a",0)
     o.write(time.strftime("%F-%H-%M-%S") +' open\n')
     o.close()
 
+    cnt = 0
     while(True):
         for line in fileinput.input():
             cnt += 1
@@ -74,13 +74,16 @@ def main():
                 filename = "/mnt/usb/record_"+ time.strftime("%F-%H-%M-%S")+ '.txt'
                 f = open(filename,"a",0)
                 cnt = 0
+                
+                o = open("/mnt/usb/openinfo.txt","a",0)
+                o.write(time.strftime("%F-%H-%M-%S") +' open\n')
+                o.close()
 
             l = line.upper()
             rec = print_data(l)
             if rec[0:-5] != pre:
                 f.write(rec + '\n')
             pre = rec[0:-5]
-            
     f.close()
     
 if __name__ =='__main__' :
