@@ -53,13 +53,11 @@ def zip_file(srcFile,dstname):
 def main():
     pre = ""
     filename = "/mnt/usb/record_"+ time.strftime("%F-%H-%M-%S")+ '.txt'
-    if os.path.exists(filename):
-        zip_file(filename, filename[:-4])
     f = open(filename,"a",0)
     cnt = 0
 
     o = open("/mnt/usb/openinfo.txt","a",0)
-    o.write(time.strftime("%F-%H-%M-%S") +'\n')
+    o.write(time.strftime("%F-%H-%M-%S") +' open\n')
     o.close()
 
     while(True):
@@ -68,6 +66,10 @@ def main():
             if cnt == 3000000:
                 f.close()
                 zip_file(filename, filename[:-4])
+                
+                o = open("/mnt/usb/openinfo.txt","a",0)
+                o.write(time.strftime("%F-%H-%M-%S") +' zip\n')
+                o.close()
                 
                 filename = "/mnt/usb/record_"+ time.strftime("%F-%H-%M-%S")+ '.txt'
                 f = open(filename,"a",0)
